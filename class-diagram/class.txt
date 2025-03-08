@@ -29,9 +29,8 @@ ITEM <|-- ITEM_W
 
 
 abstract class LINE_ITEM as "LineItem" {
-+ accept(pv: PriceVisitor): double
-+ getSubtotalPrice(pv: PriceVisitor): double
-+ accept(wv: WeightVisitor): double
++ {abstract} accept(pv: PriceVisitor): double
++ {abstract} accept(wv: WeightVisitor): double
 }
 
 note top of LINE_ITEM
@@ -73,8 +72,8 @@ CART --> "0..*" LINE_ITEM
 
 
 interface VISITOR_PRICE as "PriceVisitor" {
-+ visit(uli: UnitPricedLineItem): double
-+ visit(wli: WeightPricedLineItem): double
++ {abstract} visit(uli: UnitPricedLineItem): double
++ {abstract} visit(wli: WeightPricedLineItem): double
 }
 
 class VISITOR_PRICE_C as "ConcretePriceVisitor" {
@@ -84,8 +83,8 @@ class VISITOR_PRICE_C as "ConcretePriceVisitor" {
 VISITOR_PRICE <|-- VISITOR_PRICE_C
 
 interface VISITOR_WEIGHT as "WeightVisitor" {
-+ visit(uli: UnitPricedLineItem): double
-+ visit(wli: WeightPricedLineItem): double
++ {abstract} visit(uli: UnitPricedLineItem): double
++ {abstract} visit(wli: WeightPricedLineItem): double
 }
 
 class VISITOR_WEIGHT_C as "ConcreteWeightVisitor" {
@@ -97,7 +96,7 @@ VISITOR_WEIGHT <|-- VISITOR_WEIGHT_C
 
 
 interface POLICY as "PricingPolicy" {
-+ applyDiscount(price: double): double
++ {abstract} applyDiscount(price: double): double
 }
 
 note left of POLICY
@@ -135,9 +134,9 @@ Cf GRASP Slides 24-26
 end note
 
 interface PLAN as "CustomerPlan" {
-+ applyCartDiscount(total: double): double
-+ applyDeliveryDiscount(fee: double): double
-+ getAnnualFee(): double
++ {abstract} applyCartDiscount(total: double): double
++ {abstract} applyDeliveryDiscount(fee: double): double
++ {abstract} getAnnualFee(): double
 }
 CUSTOMERDATA --> "1" PLAN
 
@@ -169,49 +168,41 @@ class PLAN_PLAT as "PlatinumPlan" {
 }
 PLAN <|-- PLAN_PLAT
 
-interface ADDRESS as "Address" {
-+ getX(): double
-+ getY: double
-+ distanceTo(addr: Address): double
+class ADDRESS as "Address" {
+- x: double
+- y: double
 }
 CUSTOMERDATA --> "1" ADDRESS
 
-note left of ADDRESS
-- R8: Information expert
-on distance computation.
-- Interface for loose
-coupling.
-end note
-
-class M_ADDRESS as "ManhattanAddress" {
-- x: double
-- y: double
-+ getX(): double
-+ getY: double
-+ distanceTo(addr: Address): double
+interface DIST as "Distance" {
++ {abstract} distanceBetween(addr1: Address, addr2: Address): double
 }
-ADDRESS <|-- M_ADDRESS
+DIST --> ADDRESS
 
-class E_ADDRESS as "EuclidAddress" {
-- x: double
-- y: double
-+ getX(): double
-+ getY: double
-+ distanceTo(addr: Address): double
+class EUCLID as "EuclideanDistance" {
++ distanceBetween(addr1: Address, addr2: Address): double
 }
-ADDRESS <|-- E_ADDRESS
+DIST <|-- EUCLID
+
+class MANHATTAN as "ManhattanDistance" {
++ distanceBetween(addr1: Address, addr2: Address): double
+}
+DIST <|-- MANHATTAN
 
 
 
 class SUPERMARKET as "Supermarket" {
 - addr: Address
+- distComputer: Distance
 - items: List<Item>
 - plans: List<CustomerPlan>
 - policies: List<PricingPolicy>
 - customers: List<CustomerData>
++ distanceTo(addr: Address): double
 + getPolicy(category: String): PricingPolicy
 }
 SUPERMARKET --> "1" ADDRESS
+SUPERMARKET --> "1" DIST
 SUPERMARKET --> "1..*" ITEM
 SUPERMARKET --> "1..*" PLAN
 SUPERMARKET --> "1..*" POLICY
