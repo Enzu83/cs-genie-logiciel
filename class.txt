@@ -1,0 +1,102 @@
+@startuml
+
+abstract class ITEM as "Item" {
+- id: int
+- label: String
+}
+
+class ITEM_U as "UnitPricedItem" {
+- pricePerUnit: float
+- kgPerUnit: float
+}
+ITEM <|-- ITEM_U
+
+class ITEM_W as "WeightPricedItem" {
+- pricePerKg: float
+}
+ITEM <|-- ITEM_W
+
+
+
+abstract class LINE_ITEM as "LineItem" {
+- policy: PricingPolicy
++ accept(pv: PriceVisitor): float
++ getSubtotalPrice(pv: PriceVisitor): float
++ accept(wv: WeightVisitor): float
+}
+
+note left of LINE_ITEM
+Visitable ;
+Information expert
+on subtotal price
+and weight.
+end note
+
+class LINE_ITEM_U as "UnitPricedLineItem" {
+- item: UnitPricedItem
+- quantity: int
++ accept(pv: PriceVisitor): float
++ accept(wv: WeightVisitor): float
+}
+LINE_ITEM <|-- LINE_ITEM_U
+LINE_ITEM_U --> "1" ITEM_U
+
+class LINE_ITEM_W as "WeightPricedLineItem" {
+- item: WeightPricedItem
+- kgWeight: float
++ accept(pv: PriceVisitor): float
++ accept(wv: WeightVisitor): float
+}
+LINE_ITEM <|-- LINE_ITEM_W
+LINE_ITEM_W --> "1" ITEM_W
+
+
+
+interface VISITOR_PRICE as "PriceVisitor" {
++ visit(uli: UnitPricedLineItem): float
++ visit(wli: WeightPricedLineItem): float
+}
+
+class VISITOR_PRICE_C as "ConcretePriceVisitor" {
++ visit(uli: UnitPricedLineItem): float
++ visit(wli: WeightPricedLineItem): float
+}
+VISITOR_PRICE <|-- VISITOR_PRICE_C
+
+interface VISITOR_WEIGHT as "WeightVisitor" {
++ visit(uli: UnitPricedLineItem): float
++ visit(wli: WeightPricedLineItem): float
+}
+
+class VISITOR_WEIGHT_C as "ConcreteWeightVisitor" {
++ visit(uli: UnitPricedLineItem): float
++ visit(wli: WeightPricedLineItem): float
+}
+VISITOR_WEIGHT <|-- VISITOR_WEIGHT_C
+
+
+
+interface POLICY as "PricingPolicy" {
++ applyDiscount(price: float): float
+}
+LINE_ITEM --> "1" POLICY
+
+note bottom of POLICY
+R6, R6b:
+Strategy pattern
+for policies.
+end note
+
+
+
+class REGISTER as "CashRegister" {
+- cart: List<LineItem>
+- priceVisitor: PriceVisitor
+- weightVisitor: WeightVisitor
++ scanLineItem(li: LineItem)
+}
+REGISTER --> "0..*" LINE_ITEM
+REGISTER --> "1" VISITOR_PRICE
+REGISTER --> "1" VISITOR_WEIGHT
+
+@enduml
