@@ -1,5 +1,3 @@
-package Checkout;
-
 public class WeightPricedItem extends Item {
 	private float pricePerKg_;
 

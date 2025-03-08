@@ -1,5 +1,3 @@
-package Checkout;
-
 public class ConcretePriceVisitor implements PriceVisitor {
 	
 	public float visit(UnitPricedLineItem uli) {

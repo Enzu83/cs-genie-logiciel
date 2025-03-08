@@ -1,5 +1,3 @@
-package Checkout;
-
 public class UnitPricedLineItem extends LineItem {
 	private UnitPricedItem item_;
 	private int quantity_;

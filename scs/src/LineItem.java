@@ -1,5 +1,3 @@
-package Checkout;
-
 public abstract class LineItem {
 	private PricingPolicy policy_;
 

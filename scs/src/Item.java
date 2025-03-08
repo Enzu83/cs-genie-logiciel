@@ -1,5 +1,3 @@
-package Checkout;
-
 public abstract class Item {
 	
 	private static int counter_;

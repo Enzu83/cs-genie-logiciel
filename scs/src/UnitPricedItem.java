@@ -1,5 +1,3 @@
-package Checkout;
-
 public class UnitPricedItem extends Item {
 	private float pricePerUnit_;
 	private float kgPerUnit_;
