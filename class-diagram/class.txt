@@ -63,12 +63,6 @@ class LINE_ITEM_W as "WeightPricedLineItem" {
 LINE_ITEM <|-- LINE_ITEM_W
 LINE_ITEM_W --> "1" ITEM_W
 
-class CART as "ShoppingCart" {
-- cart: List<LineItem>
-+ addLineItem(li: LineItem)
-}
-CART --> "0..*" LINE_ITEM
-
 
 
 interface VISITOR_PRICE as "PriceVisitor" {
@@ -95,7 +89,8 @@ VISITOR_WEIGHT <|-- VISITOR_WEIGHT_C
 
 
 
-interface POLICY as "PricingPolicy" {
+abstract class POLICY as "PricingPolicy" {
+- category: String
 + {abstract} applyDiscount(price: double): double
 }
 
@@ -224,11 +219,13 @@ end note
 class REGISTER as "CashRegister" {
 - priceVisitor: PriceVisitor
 - weightVisitor: WeightVisitor
-+ scanCart(cart: ShoppingCart): double
+- supermarket: Supermarket
++ scanCart(cart: List<LineItem>): double
 }
-REGISTER --> CART
+REGISTER --> LINE_ITEM
 REGISTER --> "1" VISITOR_PRICE
 REGISTER --> "1" VISITOR_WEIGHT
+REGISTER --> "1" SUPERMARKET
 
 note top of REGISTER
 - Visitor pattern to compute

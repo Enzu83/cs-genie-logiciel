@@ -1,0 +1,40 @@
+@startuml
+
+participant ":Customer" as USER
+participant ":POS" as POS
+participant ":CardController" as CONTROLLER
+participant ":TAS" as TAS
+participant ":Bank" as BANK
+participant ":Account" as ACCOUNT
+
+USER -> POS : insert card
+POS -> CONTROLLER : check card
+POS <-- CONTROLLER : cardValid
+
+alt cardValid
+USER -> POS : Type PIN
+POS -> CONTROLLER : check PIN
+POS <-- CONTROLLER : pinValid
+
+alt pinValid
+POS -> TAS: Ask authorization
+POS <-- TAS: Open secure connection
+POS -> TAS: Transaction details
+TAS -> BANK: Check if authorized
+BANK -> ACCOUNT: Check balance
+BANK <-- ACCOUNT: balanceOK
+TAS <-- BANK: isAuthorized
+POS <-- TAS: isAuthorized
+
+alt isAuthorized
+TAS -> BANK: Perform transaction
+BANK -> ACCOUNT: Update balance
+end
+
+POS <-- TAS: Close secure connection
+end
+end
+
+USER <-- POS: Eject card
+
+@enduml
