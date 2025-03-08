@@ -1,18 +1,18 @@
 public class UnitPricedItem extends Item {
-	private float pricePerUnit_;
-	private float kgPerUnit_;
+	private double pricePerUnit_;
+	private double kgPerUnit_;
 	
-	public UnitPricedItem(String label, float pricePerUnit, float kgPerUnit) {
+	public UnitPricedItem(String label, double pricePerUnit, double kgPerUnit) {
 		super(label);
 		this.pricePerUnit_ = pricePerUnit;
 		this.kgPerUnit_ = kgPerUnit;
 	}
 
-	public float getPricePerUnit() {
+	public double getPricePerUnit() {
 		return pricePerUnit_;
 	}
 
-	public float getKgPerUnit() {
+	public double getKgPerUnit() {
 		return kgPerUnit_;
 	}
 	

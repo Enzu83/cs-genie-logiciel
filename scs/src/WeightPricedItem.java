@@ -1,12 +1,12 @@
 public class WeightPricedItem extends Item {
-	private float pricePerKg_;
+	private double pricePerKg_;
 
-	public WeightPricedItem(String label, float pricePerKg) {
+	public WeightPricedItem(String label, double pricePerKg) {
 		super(label);
 		this.pricePerKg_ = pricePerKg;
 	}
 
-	public float getPricePerKg() {
+	public double getPricePerKg() {
 		return pricePerKg_;
 	}
 	

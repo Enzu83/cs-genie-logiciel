@@ -1,20 +1,13 @@
 public abstract class Item {
-	
-	private static int counter_;
-	
-	private static int getNewID() {
-		// A very simple way to get unique IDs: keep a counter and
-		// increment it before returning it each time a new ID is requested.
-		counter_++;
-		return counter_;
-	}
+
+	// Very simple way to generate ids: keep a static counter and increment it
+	private static int counter_ = 0;
 	
 	private int id_;
 	private String label_;
 
 	public Item(String label) {
-		super();
-		this.id_ = getNewID();
+		this.id_ = counter_++;
 		this.label_ = label;
 	}
 

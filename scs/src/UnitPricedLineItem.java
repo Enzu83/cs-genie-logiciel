@@ -8,11 +8,11 @@ public class UnitPricedLineItem extends LineItem {
 		this.quantity_ = quantity;
 	}
 	
-	public float getPricePerUnit() {
+	public double getPricePerUnit() {
 		return this.item_.getPricePerUnit();
 	}
 	
-	public float getKgPerUnit() {
+	public double getKgPerUnit() {
 		return this.item_.getKgPerUnit();
 	}
 	
@@ -20,11 +20,11 @@ public class UnitPricedLineItem extends LineItem {
 		return this.quantity_;
 	}
 	
-	public float accept(PriceVisitor pv) {
+	public double accept(PriceVisitor pv) {
 		return pv.visit(this);
 	}
 	
-	public float accept(WeightVisitor wv) {
+	public double accept(WeightVisitor wv) {
 		return wv.visit(this);
 	}
 }
