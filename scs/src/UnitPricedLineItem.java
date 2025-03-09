@@ -1,9 +1,8 @@
-public class UnitPricedLineItem extends LineItem {
+public class UnitPricedLineItem implements LineItem {
 	private UnitPricedItem item_;
 	private int quantity_;
 	
-	public UnitPricedLineItem(UnitPricedItem item, int quantity, PricingPolicy policy) {
-		super(policy);
+	public UnitPricedLineItem(UnitPricedItem item, int quantity) {
 		this.item_ = item;
 		this.quantity_ = quantity;
 	}
@@ -20,6 +19,10 @@ public class UnitPricedLineItem extends LineItem {
 		return this.quantity_;
 	}
 	
+	public String getItemCategory() {
+		return this.item_.getCategory();
+	}
+	
 	public double accept(PriceVisitor pv) {
 		return pv.visit(this);
 	}
@@ -27,4 +30,5 @@ public class UnitPricedLineItem extends LineItem {
 	public double accept(WeightVisitor wv) {
 		return wv.visit(this);
 	}
+	
 }

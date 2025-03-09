@@ -2,33 +2,30 @@
 
 participant ":Customer" as USER
 participant ":POS" as POS
-participant ":CardController" as CONTROLLER
 participant ":TAS" as TAS
 participant ":Bank" as BANK
 participant ":Account" as ACCOUNT
 
 USER -> POS : insert card
-POS -> CONTROLLER : check card
-POS <-- CONTROLLER : cardValid
+POS -> POS : check card
 
-alt cardValid
+alt card valid
 USER -> POS : Type PIN
-POS -> CONTROLLER : check PIN
-POS <-- CONTROLLER : pinValid
+POS -> POS : check PIN
 
-alt pinValid
+alt pin valid
 POS -> TAS: Ask authorization
 POS <-- TAS: Open secure connection
 POS -> TAS: Transaction details
 TAS -> BANK: Check if authorized
-BANK -> ACCOUNT: Check balance
-BANK <-- ACCOUNT: balanceOK
+BANK -> ACCOUNT: Check validity
+BANK <-- ACCOUNT: isValid
 TAS <-- BANK: isAuthorized
 POS <-- TAS: isAuthorized
 
 alt isAuthorized
 TAS -> BANK: Perform transaction
-BANK -> ACCOUNT: Update balance
+BANK -> ACCOUNT: Update
 end
 
 POS <-- TAS: Close secure connection

@@ -1,9 +1,8 @@
-public class WeightPricedLineItem extends LineItem {
+public class WeightPricedLineItem implements LineItem {
 	private WeightPricedItem item_;
 	private double kgWeight_;
 	
-	public WeightPricedLineItem(WeightPricedItem item, double kgWeight, PricingPolicy policy) {
-		super(policy);
+	public WeightPricedLineItem(WeightPricedItem item, double kgWeight) {
 		this.item_ = item;
 		this.kgWeight_ = kgWeight;
 	}
@@ -14,6 +13,10 @@ public class WeightPricedLineItem extends LineItem {
 	
 	public double getKgWeight() {
 		return this.kgWeight_;
+	}
+	
+	public String getItemCategory() {
+		return this.item_.getCategory();
 	}
 	
 	public double accept(PriceVisitor pv) {
