@@ -1,8 +1,8 @@
 public class WeightPricedItem extends Item {
 	private double pricePerKg_;
 
-	public WeightPricedItem(String label, double pricePerKg) {
-		super(label);
+	public WeightPricedItem(String label, String category, double pricePerKg) {
+		super(label, category);
 		this.pricePerKg_ = pricePerKg;
 	}
 

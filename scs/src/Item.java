@@ -5,10 +5,12 @@ public abstract class Item {
 	
 	private int id_;
 	private String label_;
+	private String category_;
 
-	public Item(String label) {
+	public Item(String label, String category) {
 		this.id_ = counter_++;
 		this.label_ = label;
+		this.category_ = category;
 	}
 
 	public int getId() {
@@ -17,6 +19,10 @@ public abstract class Item {
 
 	public String getLabel() {
 		return label_;
+	}
+	
+	public String getCategory() {
+		return this.category_;
 	}
 	
 }
