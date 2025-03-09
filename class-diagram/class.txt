@@ -1,51 +1,64 @@
 @startuml
-
 abstract class ITEM as "Item" {
 - id: int
 - label: String
+- category: String
 }
 
+note bottom of ITEM
+Item is separate from
+LineItem because of the
+IDs. There can be several
+LineItems pertaining to
+cookies bought in different
+amounts, but there should
+be only one cookie Item.
+end note
+
 class ITEM_U as "UnitPricedItem" {
-- pricePerUnit: float
-- kgPerUnit: float
+- pricePerUnit: double
+- kgPerUnit: double
 }
 ITEM <|-- ITEM_U
 
 class ITEM_W as "WeightPricedItem" {
-- pricePerKg: float
+- pricePerKg: double
 }
 ITEM <|-- ITEM_W
 
 
 
 abstract class LINE_ITEM as "LineItem" {
-- policy: PricingPolicy
-+ accept(pv: PriceVisitor): float
-+ getSubtotalPrice(pv: PriceVisitor): float
-+ accept(wv: WeightVisitor): float
++ {abstract} accept(pv: PriceVisitor): double
++ {abstract} accept(wv: WeightVisitor): double
 }
 
-note left of LINE_ITEM
-Visitable ;
-Information expert
+note top of LINE_ITEM
+- Visitable.
+- Information expert
 on subtotal price
 and weight.
+Cf GRASP slides 37+
+- Dependency injection
+for policy for loose
+coupling.
+Cf GRASP Slides 24-26
 end note
 
 class LINE_ITEM_U as "UnitPricedLineItem" {
 - item: UnitPricedItem
 - quantity: int
-+ accept(pv: PriceVisitor): float
-+ accept(wv: WeightVisitor): float
++ accept(pv: PriceVisitor): double
++ accept(wv: WeightVisitor): double
 }
 LINE_ITEM <|-- LINE_ITEM_U
 LINE_ITEM_U --> "1" ITEM_U
 
 class LINE_ITEM_W as "WeightPricedLineItem" {
 - item: WeightPricedItem
-- kgWeight: float
-+ accept(pv: PriceVisitor): float
-+ accept(wv: WeightVisitor): float
+- kgWeight: double
++ accept(pv: PriceVisitor): double
++ accept(wv: WeightVisitor): double
 }
 LINE_ITEM <|-- LINE_ITEM_W
 LINE_ITEM_W --> "1" ITEM_W
@@ -53,50 +66,177 @@ LINE_ITEM_W --> "1" ITEM_W
 
 
 interface VISITOR_PRICE as "PriceVisitor" {
-+ visit(uli: UnitPricedLineItem): float
-+ visit(wli: WeightPricedLineItem): float
++ {abstract} visit(uli: UnitPricedLineItem): double
++ {abstract} visit(wli: WeightPricedLineItem): double
 }
 
 class VISITOR_PRICE_C as "ConcretePriceVisitor" {
-+ visit(uli: UnitPricedLineItem): float
-+ visit(wli: WeightPricedLineItem): float
++ visit(uli: UnitPricedLineItem): double
++ visit(wli: WeightPricedLineItem): double
 }
 VISITOR_PRICE <|-- VISITOR_PRICE_C
 
 interface VISITOR_WEIGHT as "WeightVisitor" {
-+ visit(uli: UnitPricedLineItem): float
-+ visit(wli: WeightPricedLineItem): float
++ {abstract} visit(uli: UnitPricedLineItem): double
++ {abstract} visit(wli: WeightPricedLineItem): double
 }
 
 class VISITOR_WEIGHT_C as "ConcreteWeightVisitor" {
-+ visit(uli: UnitPricedLineItem): float
-+ visit(wli: WeightPricedLineItem): float
++ visit(uli: UnitPricedLineItem): double
++ visit(wli: WeightPricedLineItem): double
 }
 VISITOR_WEIGHT <|-- VISITOR_WEIGHT_C
 
 
 
-interface POLICY as "PricingPolicy" {
-+ applyDiscount(price: float): float
+abstract class POLICY as "PricingPolicy" {
+- category: String
++ {abstract} applyDiscount(price: double): double
 }
-LINE_ITEM --> "1" POLICY
 
-note bottom of POLICY
+note left of POLICY
 R6, R6b:
 Strategy pattern
 for policies.
+Cf Patters slides 20+
+end note
+
+class FV_POLICY as "FreshVeggiesPolicy" {
++ applyDiscount(price: double): double
+}
+POLICY <|-- FV_POLICY
+
+class D_POLICY as "DairyPolicy" {
++ applyDiscount(price: double): double
+}
+POLICY <|-- D_POLICY
+
+
+
+class CUSTOMERDATA as "CustomerData" {
+- id: int
+- firstName: String
+- surname: String
+- plan: CustomerPlan
+- addr: Address
+}
+
+note left of CUSTOMERDATA
+Dependency injection
+for plan and address
+for loose coupling.
+Cf GRASP Slides 24-26
+end note
+
+interface PLAN as "CustomerPlan" {
++ {abstract} applyCartDiscount(total: double): double
++ {abstract} applyDeliveryDiscount(fee: double): double
++ {abstract} getAnnualFee(): double
+}
+CUSTOMERDATA --> "1" PLAN
+
+note left of PLAN
+R5, R5b, R8b:
+- Strategy pattern
+- Information expert
+on final cart discount.
+end note
+
+class PLAN_STANDARD as "StandardPlan" {
++ applyCartDiscount(total: double): double
++ applyDeliveryDiscount(fee: double): double
++ getAnnualFee(): double
+}
+PLAN <|-- PLAN_STANDARD
+
+class PLAN_PRIME as "PrimePlan" {
++ applyCartDiscount(total: double): double
++ applyDeliveryDiscount(fee: double): double
++ getAnnualFee(): double
+}
+PLAN <|-- PLAN_PRIME
+
+class PLAN_PLAT as "PlatinumPlan" {
++ applyCartDiscount(total: double): double
++ applyDeliveryDiscount(fee: double): double
++ getAnnualFee(): double
+}
+PLAN <|-- PLAN_PLAT
+
+class ADDRESS as "Address" {
+- x: double
+- y: double
+}
+CUSTOMERDATA --> "1" ADDRESS
+
+interface DIST as "Distance" {
++ {abstract} distanceBetween(addr1: Address, addr2: Address): double
+}
+DIST --> ADDRESS
+
+class EUCLID as "EuclideanDistance" {
++ distanceBetween(addr1: Address, addr2: Address): double
+}
+DIST <|-- EUCLID
+
+class MANHATTAN as "ManhattanDistance" {
++ distanceBetween(addr1: Address, addr2: Address): double
+}
+DIST <|-- MANHATTAN
+
+
+
+class SUPERMARKET as "Supermarket" {
+- addr: Address
+- distComputer: Distance
+- items: List<Item>
+- plans: List<CustomerPlan>
+- policies: List<PricingPolicy>
+- customers: List<CustomerData>
++ distanceTo(addr: Address): double
++ getPolicy(category: String): PricingPolicy
+}
+SUPERMARKET --> "1" ADDRESS
+SUPERMARKET --> "1" DIST
+SUPERMARKET --> "1..*" ITEM
+SUPERMARKET --> "1..*" PLAN
+SUPERMARKET --> "1..*" POLICY
+SUPERMARKET --> "0..*" CUSTOMERDATA
+
+note top of SUPERMARKET
+Supermarket is a database of
+sorts and aggregates items, 
+plans, policies and customer
+data.
+--> Creator pattern: it is
+responsible for creating
+CustomerData instances
+Cf GRASP Slide 32
 end note
 
 
 
 class REGISTER as "CashRegister" {
-- cart: List<LineItem>
 - priceVisitor: PriceVisitor
 - weightVisitor: WeightVisitor
-+ scanLineItem(li: LineItem)
+- supermarket: Supermarket
++ scanCart(cart: List<LineItem>): double
 }
-REGISTER --> "0..*" LINE_ITEM
+REGISTER --> LINE_ITEM
 REGISTER --> "1" VISITOR_PRICE
 REGISTER --> "1" VISITOR_WEIGHT
+REGISTER --> "1" SUPERMARKET
 
+note top of REGISTER
+- Visitor pattern to compute
+the price of the line items
+since they can be priced
+differently.
+Cf Patterns slides 35+
+- scanCart reads the contents
+of the cart and displays the
+labels and prices as instructed
+in the requirements.
+It returns the cart's price.
+end note
 @enduml
