@@ -1,8 +1,8 @@
 @startuml
 abstract class ITEM as "Item" {
-- id: int
-- label: String
-- category: String
+# id: int
+# label: String
+# category: String
 }
 
 note bottom of ITEM
@@ -246,9 +246,9 @@ end note
 
 
 class CARD as "Card" {
+- accountId: int
 - number: String
 - pin: int
-- accountId: int
 }
 
 note bottom of CARD
@@ -304,8 +304,9 @@ POS --> "1" TAS
 TAS --> "1" BANK
 
 abstract class ACCOUNT as "Account" {
-- id: int
+# id: int
 # balance: double
++ createNewCard(): Card
 + {abstract} checkTransactionValidity(amount: double): boolean
 - {abstract} takeMoney(amount: double): void
 }
@@ -340,13 +341,24 @@ class CONTROLLER as "SCSController" {
 - bank: Bank
 - tas: TAS
 - pos: POS
-+ handleCustomer(customer: Customer)
+- customers: List<Customer>
+- items: List<Item>
+- plans: List<CustomerPlan>
++ addCreditAccount(balance: double, maxDebt: double): void
++ void addDebitAccount(balance: double): void
++ addCustomer(card: Card, customerDataId: int): void
++ getCustomer(index: int): Customer
++ getCustomerPlan(index: int): CustomerPlan
++ getAccount(index: int): Account
 }
 CONTROLLER --> "1" REGISTER
 CONTROLLER --> "1" SUPERMARKET
 CONTROLLER --> "1" POS
 CONTROLLER --> "1" TAS
 CONTROLLER --> "1" Bank
-CONTROLLER --> CUSTOMER
+CONTROLLER --> "0..*" CUSTOMER
+CONTROLLER --> "0..*" ITEM
+CONTROLLER --> "1..*" PLAN
+CONTROLLER --> ACCOUNT
 
 @enduml
