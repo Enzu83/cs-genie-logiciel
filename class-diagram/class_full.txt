@@ -195,7 +195,7 @@ class SUPERMARKET as "SupermarketData" {
 - policies: List<PricingPolicy>
 - customers: List<CustomerData>
 + distanceTo(addr: Address): double
-+ getPolicy(category: String): PricingPolicy
++ findPolicy(category: String): PricingPolicy
 }
 SUPERMARKET --> "1" ADDRESS
 SUPERMARKET --> "1" DIST
@@ -244,7 +244,7 @@ end note
 
 
 class CARD as "Card" {
-- number: int
+- number: String
 - pin: int
 - accountId: int
 }
@@ -259,10 +259,12 @@ end note
 
 class POS as "POS" {
 - insertedCard: Card
+- tas: TAS
 + insertCard(card: Card): void
 + checkCard(card: Card): boolean
 + checkPIN(pin: int): boolean
-+ startTransaction(amount: double): boolean
++ askAuthorization(): boolean
++ startTransaction(amount: double): void
 + ejectCard(): void
 }
 POS --> "1" CARD
@@ -276,12 +278,24 @@ no responsability left.
 end note
 
 class BANK as "Bank" {
+- accounts: List<Account>
++ addCreditAccount(balance: double, maxDebt: double): void
++ addDebitAccount(balance: double): void
++ findAccount(accountId: int): Account
 + checkTransactionValidity(accountId: int, amount: double): boolean
++ performTransaction(accountId: int, amount: double): void
 }
+
+note left of BANK
+Creator pattern: Bank
+aggregates accounts and
+therefore must create them.
+end note
 
 class TAS as "TAS" {
 - bank: Bank
 + openSecureConnection(): boolean
++ closeSecureConnection(): void
 + startTransaction(accountId: int, amount: double): boolean
 }
 POS --> "1" TAS
@@ -289,8 +303,9 @@ TAS --> "1" BANK
 
 abstract class ACCOUNT as "Account" {
 - id: int
-- balance: double
-+ {abstract} check(amount: double): boolean
+# balance: double
++ {abstract} checkTransactionValidity(amount: double): boolean
+- {abstract} takeMoney(amount: double): void
 }
 BANK --> "1..*" ACCOUNT
 
