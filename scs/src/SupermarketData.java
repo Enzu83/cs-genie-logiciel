@@ -46,4 +46,13 @@ public class SupermarketData {
 		}
 		return null;
 	}
+
+	public CustomerData findCustomerData(int customerDataId) {
+		for (CustomerData customerData : this.customers_) {
+			if (customerData.getId() == customerDataId) {
+				return customerData;
+			}
+		}
+		return null;
+	}
 }

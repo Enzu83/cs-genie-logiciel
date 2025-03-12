@@ -10,6 +10,8 @@ public class DairyPolicy extends PricingPolicy {
 		if (price >= 20) {
 			return 0.85*price;
 		}
-		return 0.95*price;
+		else {
+			return 0.95*price;
+		}
 	}
 }

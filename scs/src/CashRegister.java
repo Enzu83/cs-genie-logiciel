@@ -13,6 +13,11 @@ public class CashRegister {
 	
 	public double scanCart(List<LineItem> cart) {
 		double cartPrice = 0.0;
+		double cartWeight = 0.0;
+		
+		for (LineItem item : cart) {
+
+		}
 		// TODO
 		//for (LineItem li: cart) {
 		//	double liPrice = li.accept(priceVisitor_)

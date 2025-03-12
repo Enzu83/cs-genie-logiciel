@@ -3,7 +3,7 @@ public class CustomerData {
 	// Very simple way to generate ids: keep a static counter and increment it
 	private static int counter_ = 0;
 	
-	private int id_;
+	private final int id_;
 	private String firstName_;
 	private String surname_;
 	private CustomerPlan plan_;
@@ -19,6 +19,22 @@ public class CustomerData {
 
 	public int getId() {
 		return id_;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName_ = firstName;
+	}
+
+	public void setSurname(String surname) {
+		this.surname_ = surname;
+	}
+
+	public void setPlan(CustomerPlan plan) {
+		this.plan_ = plan;
+	}
+
+	public void setAddr(Address addr) {
+		this.addr_ = addr;
 	}
 
 	public String getFirstName() {
