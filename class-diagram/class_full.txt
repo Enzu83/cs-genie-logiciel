@@ -199,13 +199,9 @@ class SUPERMARKET as "SupermarketData" {
 + addWeightPricedItem(label: String, category: String, pricePerKg: double): void
 + addPolicy(policy: PricingPolicy): void
 + distanceTo(addr: Address): double
-<<<<<<< HEAD
-+ findPolicy(category: String): PricingPolicy
-=======
 + addCustomerData(firstName: String, surname: String, plan: CustomerPlan, addr: Address): void
 + findPolicy(category: String): PricingPolicy
 + findCustomerData(customerDataId: int): CustomerData
->>>>>>> nathael
 }
 SUPERMARKET --> "1" ADDRESS
 SUPERMARKET --> "1" DIST
