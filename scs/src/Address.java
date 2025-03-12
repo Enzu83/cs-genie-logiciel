@@ -7,6 +7,11 @@ public class Address {
 		this.y_ = y;
 	}
 
+	public void setPoint(double x, double y) {
+		this.x_ = x;
+		this.y_ = y;
+	}
+
 	public double getX() {
 		return x_;
 	}
