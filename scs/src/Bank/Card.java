@@ -1,14 +1,14 @@
 package Bank;
 
 public class Card {
+    private final int accountId_;
     private final int pin_;
     private final String number_;
-    private final int accountId_;
 
-    public Card(int pin, String number, int accountId) {
+    public Card(int accountId, int pin, String number) {
+        this.accountId_ = accountId;
         this.pin_ = pin;
         this.number_ = number;
-        this.accountId_ = accountId;
     }
 
     public int getPin() {
@@ -21,5 +21,9 @@ public class Card {
 
     public int getAccountId() {
         return this.accountId_;
+    }
+
+    public String toString() {
+        return "Card[accountId=" + this.accountId_ + ", pin=" + this.pin_ + ", number=" + this.number_ + "]";
     }
 }

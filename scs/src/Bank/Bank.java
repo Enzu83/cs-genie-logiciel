@@ -51,4 +51,12 @@ public class Bank {
             account.takeMoney(amount);
         }
     }
+
+    public Account getAccount(int index) {
+        return this.accounts_.get(index);
+    }
+
+    public String toString() {
+        return "Bank [accounts=" + this.accounts_ + "]";
+    }
 }

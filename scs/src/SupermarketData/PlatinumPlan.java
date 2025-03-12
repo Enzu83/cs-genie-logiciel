@@ -15,4 +15,8 @@ public class PlatinumPlan implements CustomerPlan {
 		// 200€ annual fee
 		return 200.0;
 	}
+
+	public String toString() {
+		return "PlatinumPlan";
+	}
 }

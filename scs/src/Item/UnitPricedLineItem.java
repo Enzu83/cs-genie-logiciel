@@ -36,5 +36,8 @@ public class UnitPricedLineItem implements LineItem {
 	public double accept(WeightVisitor wv) {
 		return wv.visit(this);
 	}
-	
+
+	public String toString() {
+		return "UnitPricedLineItem[item=" + item_ + ", quantity=" + quantity_ + "]";
+	}
 }

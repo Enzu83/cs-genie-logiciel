@@ -34,4 +34,8 @@ public class CreditAccount extends Account {
     private double getCurrentDebt() {
         return this.currentDebt_;
     }
+
+    public String toString() {
+        return "CreditAccount[id=" + this.id_ + ", balance=" + this.balance_ + ", maxDebt=" + this.maxDebt_ + "]";
+    }
 }

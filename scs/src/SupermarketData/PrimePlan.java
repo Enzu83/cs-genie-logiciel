@@ -15,4 +15,8 @@ public class PrimePlan implements CustomerPlan {
 		// 50€ annual fee
 		return 50.0;
 	}
+
+	public String toString() {
+		return "PrimePlan";
+	}
 }

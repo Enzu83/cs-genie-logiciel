@@ -1,3 +1,5 @@
+package Main;
+
 import Item.LineItem;
 import Item.PriceVisitor;
 import Item.WeightVisitor;
@@ -58,5 +60,9 @@ public class CashRegister {
 		} else {
 			return cartPrice;
 		}
+	}
+
+	public String toString() {
+		return "CashRegister[priceVisitor" + this.priceVisitor_ + ", weightVisitor=" + this.weightVisitor_ + ", supermarketData=" + this.supermarketData_ + "]";
 	}
 }

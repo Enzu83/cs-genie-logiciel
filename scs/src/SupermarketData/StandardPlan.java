@@ -15,4 +15,8 @@ public class StandardPlan implements CustomerPlan {
 		// No annual fee
 		return 0.0;
 	}
+
+	public String toString() {
+		return "StandardPlan";
+	}
 }

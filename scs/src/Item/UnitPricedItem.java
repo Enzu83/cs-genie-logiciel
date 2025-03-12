@@ -10,6 +10,14 @@ public class UnitPricedItem extends Item {
 		this.kgPerUnit_ = kgPerUnit;
 	}
 
+	public void setPricePerUnit(double pricePerUnit) {
+		this.pricePerUnit_ = pricePerUnit;
+	}
+
+	public void setKgPerUnit_(double kgPerUnit_) {
+		this.kgPerUnit_ = kgPerUnit_;
+	}
+
 	public double getPricePerUnit() {
 		return pricePerUnit_;
 	}
@@ -17,5 +25,8 @@ public class UnitPricedItem extends Item {
 	public double getKgPerUnit() {
 		return kgPerUnit_;
 	}
-	
+
+	public String toString() {
+		return "UnitPricedItem[id=" + this.id_ + ", label=" + this.label_ + ", category=" + this.category_ + ", pricePerUnit=" + this.pricePerUnit_ + ", kgPerUnit=" + this.kgPerUnit_ + "]";
+	}
 }

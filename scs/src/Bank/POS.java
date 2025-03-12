@@ -66,4 +66,7 @@ public class POS {
         return this.insertedCard_;
     }
 
+    public String toString() {
+        return "POS[TAS=" + this.tas_ + ", insertedCard=" + this.insertedCard_ + "]";
+    }
 }

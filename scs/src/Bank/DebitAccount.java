@@ -18,4 +18,8 @@ public class DebitAccount extends Account {
     public boolean checkTransactionValidity(double amount) {
         return this.balance_ >= amount;
     }
+
+    public String toString() {
+        return "DebitAccount[id=" + this.id_ + ", balance=" + this.balance_ + "]";
+    }
 }

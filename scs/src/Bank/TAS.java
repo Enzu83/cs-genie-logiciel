@@ -35,4 +35,8 @@ public class TAS {
     public Bank getBank() {
         return this.bank_;
     }
+
+    public String toString() {
+        return "TAS[Bank=" + this.bank_ + "]";
+    }
 }

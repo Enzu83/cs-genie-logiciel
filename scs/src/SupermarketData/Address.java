@@ -21,5 +21,8 @@ public class Address {
 	public double getY() {
 		return y_;
 	}
-	
+
+	public String toString() {
+		return "Address[x_=" + x_ + ", y_=" + y_ + "]";
+	}
 }

@@ -9,4 +9,8 @@ public class ConcreteWeightVisitor implements WeightVisitor {
 	public double visit(WeightPricedLineItem wli) {
 		return wli.getWeight();
 	}
+
+	public String toString() {
+		return "Concrete Weight Visitor";
+	}
 }

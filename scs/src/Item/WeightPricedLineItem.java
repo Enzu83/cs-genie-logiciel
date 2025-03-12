@@ -32,4 +32,8 @@ public class WeightPricedLineItem implements LineItem {
 	public double accept(WeightVisitor wv) {
 		return wv.visit(this);
 	}
+
+	public String toString() {
+		return "WeightPricedLineItem[item=" + item_ + ", weight=" + weight_ + "]";
+	}
 }

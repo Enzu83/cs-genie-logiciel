@@ -47,4 +47,8 @@ public class SupermarketData {
 		}
 		return null;
 	}
+
+	public String toString() {
+		return "SupermarketData[addr=" + this.addr_ + ", distComputer=" + this.distComputer_ + ", policies=" + this.policies_ + ", customers=" + this.customers_ + "]";
+	}
 }

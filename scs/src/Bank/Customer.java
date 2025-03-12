@@ -28,4 +28,8 @@ public class Customer {
     public int getCustomerDataId() {
         return this.customerDataId;
     }
+
+    public String toString() {
+        return "Customer[card_=" + card_ + ", customerDataId=" + customerDataId + "]";
+    }
 }

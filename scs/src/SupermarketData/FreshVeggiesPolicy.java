@@ -10,4 +10,8 @@ public class FreshVeggiesPolicy extends PricingPolicy {
 		// A 10% discount on vegetables
 		return 0.9*price;
 	}
+
+	public String toString() {
+		return "Fresh Veggies Policy";
+	}
 }

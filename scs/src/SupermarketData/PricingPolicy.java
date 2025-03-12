@@ -18,4 +18,6 @@ public abstract class PricingPolicy {
 	// Strategy pattern
 	// Permet de librement définir de nouvelles politiques tarifaires.
 	public abstract double applyDiscount(double price);
+
+	public abstract String toString();
 }

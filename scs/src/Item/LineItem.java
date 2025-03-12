@@ -13,4 +13,6 @@ public interface LineItem {
 	String getItemLabel();
 	
 	String getItemCategory();
+
+	String toString();
 }

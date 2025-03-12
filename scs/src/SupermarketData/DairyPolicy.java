@@ -16,4 +16,8 @@ public class DairyPolicy extends PricingPolicy {
 			return 0.95*price;
 		}
 	}
+
+	public String toString() {
+		return "Dairy Policy";
+	}
 }

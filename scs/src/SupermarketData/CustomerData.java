@@ -54,5 +54,8 @@ public class CustomerData {
 	public Address getAddr() {
 		return addr_;
 	}
-	
+
+	public String toString() {
+		return "CustomerData[firstName_=" + ", surname=" + surname_ + ", plan=" + plan_ + ", addr=" + addr_ + "]";
+	}
 }
