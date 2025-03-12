@@ -19,6 +19,10 @@ public class UnitPricedLineItem implements LineItem {
 		return this.quantity_;
 	}
 	
+	public String getItemLabel() {
+		return this.item_.getLabel();
+	}
+	
 	public String getItemCategory() {
 		return this.item_.getCategory();
 	}

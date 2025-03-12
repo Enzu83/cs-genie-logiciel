@@ -5,6 +5,6 @@ public class ConcreteWeightVisitor implements WeightVisitor {
 	}
 	
 	public double visit(WeightPricedLineItem wli) {
-		return wli.getKgWeight();
+		return wli.getWeight();
 	}
 }

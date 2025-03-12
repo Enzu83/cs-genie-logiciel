@@ -31,6 +31,7 @@ ITEM <|-- ITEM_W
 interface LINE_ITEM as "LineItem" {
 + {abstract} accept(pv: PriceVisitor): double
 + {abstract} accept(wv: WeightVisitor): double
++ {abstract} getItemLabel(): String
 + {abstract} getItemCategory(): String
 }
 
@@ -194,8 +195,17 @@ class SUPERMARKET as "SupermarketData" {
 - plans: List<CustomerPlan>
 - policies: List<PricingPolicy>
 - customers: List<CustomerData>
++ addUnitPricedItem(label: String, category: String, pricePerUnit: String, kgPerUnit: String): void
++ addWeightPricedItem(label: String, category: String, pricePerKg: double): void
++ addPolicy(policy: PricingPolicy): void
 + distanceTo(addr: Address): double
+<<<<<<< HEAD
 + findPolicy(category: String): PricingPolicy
+=======
++ addCustomerData(firstName: String, surname: String, plan: CustomerPlan, addr: Address): void
++ findPolicy(category: String): PricingPolicy
++ findCustomerData(customerDataId: int): CustomerData
+>>>>>>> nathael
 }
 SUPERMARKET --> "1" ADDRESS
 SUPERMARKET --> "1" DIST
