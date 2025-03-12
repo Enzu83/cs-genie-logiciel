@@ -1,7 +1,7 @@
 public abstract class Account {
     private static int counter_ = 0;
 
-    protected int id_;
+    private final int id_;
     protected double balance_;
 
     public Account(double balance) {
@@ -12,7 +12,7 @@ public abstract class Account {
     public abstract void takeMoney(double amount);
     public abstract boolean checkTransactionValidity(double amount);
 
-    public int getId_() {
+    public int getId() {
         return this.id_;
     }
 

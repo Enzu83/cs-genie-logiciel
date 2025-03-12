@@ -1,30 +1,28 @@
 public class POS {
     private TAS tas_;
-    private Card insertCard_;
+    private Card insertedCard_;
 
     public POS(TAS tas) {
-        this.insertCard_ = null;
+        this.insertedCard_ = null;
         this.tas_ = tas;
     }
 
     public void insertCard(Card card) {
-        if (this.insertCard_ == null) {
+        if (this.insertedCard_ == null) {
             if (checkCard(card)) {
-                this.insertCard_ = card;
+                this.insertedCard_ = card;
                 System.out.println("Card valid. Inserted card: " + card);
-            }
-            else {
+            } else {
                 System.out.println("Card invalid. Can't insert card.");
             }
-        }
-        else {
+        } else {
             System.out.println("A card is already inserted. Can't insert card.");
         }
     }
 
     public void ejectCard() {
-        System.out.println("Card " + this.insertCard_ + " ejected.");
-        this.insertCard_ = null;
+        System.out.println("Card " + this.insertedCard_ + " ejected.");
+        this.insertedCard_ = null;
     }
 
     public boolean checkCard(Card card) {
@@ -32,19 +30,26 @@ public class POS {
     }
 
     public boolean checkPIN(int pin) {
-        return pin == insertCard_.getPin();
+        if (insertedCard_ == null) {
+            System.out.println("No card inserted. Can't check PIN.");
+            return false;
+        } else {
+            return pin == insertedCard_.getPin();
+        }
     }
 
-    public void askAuthorization() {
-        this.tas_.openSecureConnection();
+    public boolean askAuthorization() {
+        return this.tas_.openSecureConnection();
     }
 
     public void startTransaction(double amount) {
-        if (this.tas_.startTransaction(this.insertCard_.getAccountId(), amount)) {
+        if (this.insertedCard_ == null) {
+            System.out.println("No card inserted. Can't start transaction.");
+        } 
+        else if (this.tas_.startTransaction(this.insertedCard_.getAccountId(), amount)) {
             System.out.println("Transaction accepted.");
+            this.ejectCard();
         }
-
-        this.ejectCard();
     }
 
     public void setTas(TAS tas) {
@@ -56,7 +61,7 @@ public class POS {
     }
 
     public Card getInsertCard() {
-        return this.insertCard_;
+        return this.insertedCard_;
     }
 
 }
