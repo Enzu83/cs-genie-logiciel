@@ -11,17 +11,47 @@ public class CashRegister {
 		this.supermarketData_ = supermarketData;
 	}
 	
-	public double scanCart(List<LineItem> cart) {
+	private double scanLineItemPrice(LineItem lineItem) {
+		double lineItemPrice = lineItem.accept(this.priceVisitor_);
+		PricingPolicy itemPolicy = this.supermarketData_.findPolicy(lineItem.getItemCategory());
+		
+		if (itemPolicy != null) {
+			lineItemPrice = itemPolicy.applyDiscount(lineItemPrice);
+		}
+		
+		System.out.printf("Scanned %s (%d euros)\n", lineItem.getItemLabel(), lineItemPrice);
+		return lineItemPrice;
+	}
+	
+	private double scanLineItemWeight(LineItem lineItem) {
+		return lineItem.accept(this.weightVisitor_);
+	}
+	
+	private double computeDeliveryFee(double shippingDistance, double cartWeight, CustomerPlan customerPlan) {
+		return customerPlan.applyDeliveryDiscount(3.0 + shippingDistance * cartWeight * 0.5);
+	}
+	
+	public double scanCart(List<LineItem> cart, int customerDataId, boolean deliverToHome) {
 		double cartPrice = 0.0;
 		double cartWeight = 0.0;
 		
-		for (LineItem item : cart) {
-
+		// Sum sub-total prices and weights
+		for (LineItem lineItem : cart) {
+			cartPrice += this.scanLineItemPrice(lineItem);
+			cartWeight += this.scanLineItemWeight(lineItem);
 		}
-		// TODO
-		//for (LineItem li: cart) {
-		//	double liPrice = li.accept(priceVisitor_)
-		//}
-		return cartPrice; // What about the full weight to compute the delivery fees ?
+		
+		// Take customer plan into account
+		CustomerData customerData = this.supermarketData_.findCustomerData(customerDataId);
+		CustomerPlan customerPlan = customerData.getPlan();
+		cartPrice = customerPlan.applyCartDiscount(cartPrice);
+		
+		// Take delivery into account
+		if (deliverToHome) {
+			double shippingDistance = this.supermarketData_.distanceTo(customerData.getAddr());
+			return cartPrice + this.computeDeliveryFee(shippingDistance, cartWeight, customerPlan);
+		} else {
+			return cartPrice;
+		}
 	}
 }

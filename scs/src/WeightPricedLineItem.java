@@ -1,18 +1,22 @@
 public class WeightPricedLineItem implements LineItem {
 	private WeightPricedItem item_;
-	private double kgWeight_;
+	private double weight_;
 	
 	public WeightPricedLineItem(WeightPricedItem item, double kgWeight) {
 		this.item_ = item;
-		this.kgWeight_ = kgWeight;
+		this.weight_ = kgWeight;
 	}
 	
 	public double getPricePerKg() {
 		return this.item_.getPricePerKg();
 	}
 	
-	public double getKgWeight() {
-		return this.kgWeight_;
+	public double getWeight() {
+		return this.weight_;
+	}
+	
+	public String getItemLabel() {
+		return this.item_.getLabel();
 	}
 	
 	public String getItemCategory() {

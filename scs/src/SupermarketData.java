@@ -5,7 +5,6 @@ public class SupermarketData {
 	private Address addr_;
 	private Distance distComputer_;
 	private List<Item> items_;
-	private List<CustomerPlan> plans_;
 	private List<PricingPolicy> policies_;
 	private List<CustomerData> customers_;
 	
@@ -13,25 +12,30 @@ public class SupermarketData {
 		this.addr_ = addr;
 		this.distComputer_ = distComputer;
 		this.items_ = new ArrayList<Item>();
-		this.plans_ = new ArrayList<CustomerPlan>();
 		this.policies_ = new ArrayList<PricingPolicy>();
 		this.customers_ = new ArrayList<CustomerData>();
 	}
 	
-	public void addItem(Item item) {
-		this.items_.add(item);
+	public void addUnitPricedItem(String label, String category, double pricePerUnit, double kgPerUnit) {
+		// Creator pattern: SupermarketData aggregates items 
+		// and thus is responsible for creating them.
+		this.items_.add(new UnitPricedItem(label, category, pricePerUnit, kgPerUnit));
 	}
 	
-	public void addPlan(CustomerPlan plan) {
-		this.plans_.add(plan);
+	public void addWeightPricedItem(String label, String category, double pricePerKg) {
+		// Creator pattern: SupermarketData aggregates items 
+		// and thus is responsible for creating them.
+		this.items_.add(new WeightPricedItem(label, category, pricePerKg));
 	}
 	
 	public void addPolicy(PricingPolicy policy) {
 		this.policies_.add(policy);
 	}
 	
-	public void addCustomerData(CustomerData customer) {
-		this.customers_.add(customer);
+	public void addCustomerData(String firstName, String surname, CustomerPlan plan, Address addr) {
+		// Creator pattern: SupermarketData aggregates CustomerData instances
+		// and thus is responsible for creating them.
+		this.customers_.add(new CustomerData(firstName, surname, plan, addr));
 	}
 	
 	public double distanceTo(Address addr) {
