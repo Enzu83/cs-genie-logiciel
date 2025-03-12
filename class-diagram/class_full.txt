@@ -191,15 +191,12 @@ DIST <|-- MANHATTAN
 class SUPERMARKET as "SupermarketData" {
 - addr: Address
 - distComputer: Distance
-- items: List<Item>
 - plans: List<CustomerPlan>
 - policies: List<PricingPolicy>
 - customers: List<CustomerData>
-+ addUnitPricedItem(label: String, category: String, pricePerUnit: String, kgPerUnit: String): void
-+ addWeightPricedItem(label: String, category: String, pricePerKg: double): void
 + addPolicy(policy: PricingPolicy): void
-+ distanceTo(addr: Address): double
 + addCustomerData(firstName: String, surname: String, plan: CustomerPlan, addr: Address): void
++ distanceTo(addr: Address): double
 + findPolicy(category: String): PricingPolicy
 + findCustomerData(customerDataId: int): CustomerData
 }
@@ -212,12 +209,11 @@ SUPERMARKET --> "0..*" CUSTOMERDATA
 
 note top of SUPERMARKET
 SupermarketData is a database
-of sorts and aggregates items, 
-plans, policies and customer
-data.
+of sorts and aggregates 
+policies and customer data.
 --> Creator pattern: it is
 responsible for creating
-CustomerData instances
+CustomerData instances.
 Cf GRASP Slide 32
 end note
 
@@ -338,15 +334,19 @@ CUSTOMER --> POS
 
 
 
-class CONTROLLER as "SupermarketController" {
+class CONTROLLER as "SCSController" {
 - supermarketData: SupermarketData
 - cashRegister: CashRegister
+- bank: Bank
+- tas: TAS
 - pos: POS
 + handleCustomer(customer: Customer)
 }
 CONTROLLER --> "1" REGISTER
 CONTROLLER --> "1" SUPERMARKET
 CONTROLLER --> "1" POS
+CONTROLLER --> "1" TAS
+CONTROLLER --> "1" Bank
 CONTROLLER --> CUSTOMER
 
 @enduml
