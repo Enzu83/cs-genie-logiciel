@@ -38,7 +38,7 @@ public class SupermarketData {
 		return this.distComputer_.distanceBetween(this.addr_, addr);
 	}
 	
-	public PricingPolicy getPolicy(String category) {
+	public PricingPolicy findPolicy(String category) {
 		for (PricingPolicy policy : this.policies_) {
 			if (policy.getCategory().equals(category)) {
 				return policy;

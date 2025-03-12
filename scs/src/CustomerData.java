@@ -10,7 +10,6 @@ public class CustomerData {
 	private Address addr_;
 	
 	public CustomerData(String firstName, String surname, CustomerPlan plan, Address addr) {
-		super();
 		this.id_ = counter_++;
 		this.firstName_ = firstName;
 		this.surname_ = surname;

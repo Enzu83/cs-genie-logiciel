@@ -3,7 +3,6 @@ public class Address {
 	private double y_;
 	
 	public Address(double x, double y) {
-		super();
 		this.x_ = x;
 		this.y_ = y;
 	}
