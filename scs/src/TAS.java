@@ -5,8 +5,9 @@ public class TAS {
         this.bank_ = bank;
     }
 
-    public void openSecureConnection() {
+    public boolean openSecureConnection() {
         System.out.println("Secure connection opened.");
+        return true;
     }
 
     public void closeSecureConnection() {

@@ -1,12 +1,11 @@
 public class CreditAccount extends Account {
     private double maxDebt_;
-    private double currentDebt_;
+    private double currentDebt_ = 0;
 
     public CreditAccount(double balance, double maxDebt) {
         super(balance);
 
         this.maxDebt_ = maxDebt;
-        this.currentDebt_ = 0;
     }
 
     public void takeMoney(double amount) {

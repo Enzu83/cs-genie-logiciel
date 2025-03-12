@@ -8,17 +8,17 @@ public class Bank {
         this.accounts_ = new ArrayList<Account>();
     }
 
-    public void newCreditAccount(double maxDebt) {
-        this.accounts_.add(new CreditAccount(0., maxDebt));
+    public void addCreditAccount(double balance, double maxDebt) {
+        this.accounts_.add(new CreditAccount(balance, maxDebt));
     }
 
-    public void newDebitAccount() {
-        this.accounts_.add(new DebitAccount(0.));
+    public void addDebitAccount(double balance) {
+        this.accounts_.add(new DebitAccount(balance));
     }
 
     private Account findAccount(int accountId) {
         for (Account account : this.accounts_) {
-            if (account.getId_() == accountId) {
+            if (account.getId() == accountId) {
                 return account;
             }
         }
