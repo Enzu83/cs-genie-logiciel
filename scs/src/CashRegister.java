@@ -1,3 +1,8 @@
+import Item.LineItem;
+import Item.PriceVisitor;
+import Item.WeightVisitor;
+import SupermarketData.*;
+
 import java.util.List;
 
 public class CashRegister {
@@ -19,7 +24,7 @@ public class CashRegister {
 			lineItemPrice = itemPolicy.applyDiscount(lineItemPrice);
 		}
 		
-		System.out.printf("Scanned %s (%d euros)\n", lineItem.getItemLabel(), lineItemPrice);
+		System.out.printf("Scanned %s (%f euros)\n", lineItem.getItemLabel(), lineItemPrice);
 		return lineItemPrice;
 	}
 	
