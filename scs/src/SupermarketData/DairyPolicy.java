@@ -9,7 +9,7 @@ public class DairyPolicy extends PricingPolicy {
 	public double applyDiscount(double price) {
 		// A 5% discount on dairy products, which rises to 15% instead
 		// if more that 20€ of the same product is bought at once.
-		if (price >= 20) {
+		if (price >= 20.0) {
 			return 0.85*price;
 		}
 		else {
