@@ -41,10 +41,6 @@ note top of LINE_ITEM
 on subtotal price
 and weight.
 Cf GRASP slides 37+
-- Dependency injection
-for policy for loose
-coupling.
-Cf GRASP Slides 24-26
 end note
 
 class LINE_ITEM_U as "UnitPricedLineItem" {
@@ -58,7 +54,7 @@ LINE_ITEM_U --> "1" ITEM_U
 
 class LINE_ITEM_W as "WeightPricedLineItem" {
 - item: WeightPricedItem
-- kgWeight: double
+- weight: double
 + accept(pv: PriceVisitor): double
 + accept(wv: WeightVisitor): double
 }
@@ -130,7 +126,7 @@ for loose coupling.
 Cf GRASP Slides 24-26
 end note
 
-interface PLAN as "CustomerPlan" {
+abstract class PLAN as "CustomerPlan" {
 + {abstract} applyCartDiscount(total: double): double
 + {abstract} applyDeliveryDiscount(fee: double): double
 + {abstract} getAnnualFee(): double
@@ -202,7 +198,6 @@ class SUPERMARKET as "SupermarketData" {
 }
 SUPERMARKET --> "1" ADDRESS
 SUPERMARKET --> "1" DIST
-SUPERMARKET --> "1..*" ITEM
 SUPERMARKET --> "1..*" PLAN
 SUPERMARKET --> "1..*" POLICY
 SUPERMARKET --> "0..*" CUSTOMERDATA
@@ -266,7 +261,7 @@ class POS as "POS" {
 + checkCard(card: Card): boolean
 + checkPIN(pin: int): boolean
 + askAuthorization(): boolean
-+ startTransaction(amount: double): void
++ startTransaction(amount: double): boolean
 + ejectCard(): void
 }
 POS --> "1" CARD
@@ -308,19 +303,21 @@ abstract class ACCOUNT as "Account" {
 # balance: double
 + createNewCard(): Card
 + {abstract} checkTransactionValidity(amount: double): boolean
-- {abstract} takeMoney(amount: double): void
++ {abstract} takeMoney(amount: double): void
 }
 BANK --> "1..*" ACCOUNT
 
 class ACCOUNT_C as "CreditAccount" {
 - maxDebt: double
 - currentDebt: double
-+ check(amount: double): boolean
++ checkTransactionValidity(amount: double): boolean
++ takeMoney(amount: double): void
 }
 ACCOUNT <|-- ACCOUNT_C
 
 class ACCOUNT_D as "DebitAccount" {
-+ check(amount: double): boolean
++ checkTransactionValidity(amount: double): boolean
++ takeMoney(amount: double): void
 }
 ACCOUNT <|-- ACCOUNT_D
 
@@ -328,7 +325,7 @@ class CUSTOMER as "Customer" {
 - card: Card
 - customerDataId: int
 + insertCard(pos: POS): void
-+ typePIN(pos: POS, pin: int): void
++ typePIN(pos: POS, pin: int): boolean
 }
 CUSTOMER --> "1" CARD
 CUSTOMER --> POS
@@ -346,6 +343,8 @@ class CONTROLLER as "SCSController" {
 - plans: List<CustomerPlan>
 + addCreditAccount(balance: double, maxDebt: double): void
 + void addDebitAccount(balance: double): void
++ addUnitPricedItem(label: String, category: String, pricePerUnit: double, kgPerUnit: double): void
++ addWeightPricedItem(label: String, category: String, pricePerKg: double): void
 + addCustomer(card: Card, customerDataId: int): void
 + getCustomer(index: int): Customer
 + getCustomerPlan(index: int): CustomerPlan

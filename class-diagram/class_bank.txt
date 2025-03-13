@@ -1,0 +1,93 @@
+@startuml
+
+class CARD as "Card" {
+- accountId: int
+- number: String
+- pin: int
+}
+
+note right of CARD
+Card simply aggregates data,
+which means the high coupling
+here isn't too bad.
+An interface here wouldn't
+add anything.
+end note
+
+class POS as "POS" {
+- insertedCard: Card
+- tas: TAS
++ insertCard(card: Card): void
++ checkCard(card: Card): boolean
++ checkPIN(pin: int): boolean
++ askAuthorization(): boolean
++ startTransaction(amount: double): boolean
++ ejectCard(): void
+}
+POS --> "1" CARD
+
+note right of POS
+We wanted to separate the handling
+of the card with a separate
+CardController class, but it
+turned out that the POS had
+no responsability left.
+end note
+
+class BANK as "Bank" {
+- accounts: List<Account>
++ addCreditAccount(balance: double, maxDebt: double): void
++ addDebitAccount(balance: double): void
++ findAccount(accountId: int): Account
++ checkTransactionValidity(accountId: int, amount: double): boolean
++ performTransaction(accountId: int, amount: double): void
+}
+
+note left of BANK
+Creator pattern: Bank
+aggregates accounts and
+therefore must create them.
+end note
+
+class TAS as "TAS" {
+- bank: Bank
++ openSecureConnection(): boolean
++ closeSecureConnection(): void
++ startTransaction(accountId: int, amount: double): boolean
+}
+POS --> "1" TAS
+TAS --> "1" BANK
+
+abstract class ACCOUNT as "Account" {
+# id: int
+# balance: double
++ createNewCard(): Card
++ {abstract} checkTransactionValidity(amount: double): boolean
++ {abstract} takeMoney(amount: double): void
+}
+BANK --> "1..*" ACCOUNT
+
+class ACCOUNT_C as "CreditAccount" {
+- maxDebt: double
+- currentDebt: double
++ checkTransactionValidity(amount: double): boolean
++ takeMoney(amount: double): void
+}
+ACCOUNT <|-- ACCOUNT_C
+
+class ACCOUNT_D as "DebitAccount" {
++ checkTransactionValidity(amount: double): boolean
++ takeMoney(amount: double): void
+}
+ACCOUNT <|-- ACCOUNT_D
+
+class CUSTOMER as "Customer" {
+- card: Card
+- customerDataId: int
++ insertCard(pos: POS): void
++ typePIN(pos: POS, pin: int): boolean
+}
+CUSTOMER --> "1" CARD
+CUSTOMER --> POS
+
+@enduml
