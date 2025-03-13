@@ -1,0 +1,89 @@
+@startuml
+
+abstract class ITEM as "Item" {
+# id: int
+# label: String
+# category: String
+}
+
+note bottom of ITEM
+Item is separate from
+LineItem because of the
+IDs. There can be several
+LineItems pertaining to
+cookies bought in different
+amounts, but there should
+be only one cookie Item.
+end note
+
+class ITEM_U as "UnitPricedItem" {
+- pricePerUnit: double
+- kgPerUnit: double
+}
+ITEM <|-- ITEM_U
+
+class ITEM_W as "WeightPricedItem" {
+- pricePerKg: double
+}
+ITEM <|-- ITEM_W
+
+
+
+interface LINE_ITEM as "LineItem" {
++ {abstract} accept(pv: PriceVisitor): double
++ {abstract} accept(wv: WeightVisitor): double
++ {abstract} getItemLabel(): String
++ {abstract} getItemCategory(): String
+}
+
+note top of LINE_ITEM
+- Visitable.
+- Information expert
+on subtotal price
+and weight.
+Cf GRASP slides 37+
+end note
+
+class LINE_ITEM_U as "UnitPricedLineItem" {
+- item: UnitPricedItem
+- quantity: int
++ accept(pv: PriceVisitor): double
++ accept(wv: WeightVisitor): double
+}
+LINE_ITEM <|-- LINE_ITEM_U
+LINE_ITEM_U --> "1" ITEM_U
+
+class LINE_ITEM_W as "WeightPricedLineItem" {
+- item: WeightPricedItem
+- weight: double
++ accept(pv: PriceVisitor): double
++ accept(wv: WeightVisitor): double
+}
+LINE_ITEM <|-- LINE_ITEM_W
+LINE_ITEM_W --> "1" ITEM_W
+
+
+
+interface VISITOR_PRICE as "PriceVisitor" {
++ {abstract} visit(uli: UnitPricedLineItem): double
++ {abstract} visit(wli: WeightPricedLineItem): double
+}
+
+class VISITOR_PRICE_C as "ConcretePriceVisitor" {
++ visit(uli: UnitPricedLineItem): double
++ visit(wli: WeightPricedLineItem): double
+}
+VISITOR_PRICE <|-- VISITOR_PRICE_C
+
+interface VISITOR_WEIGHT as "WeightVisitor" {
++ {abstract} visit(uli: UnitPricedLineItem): double
++ {abstract} visit(wli: WeightPricedLineItem): double
+}
+
+class VISITOR_WEIGHT_C as "ConcreteWeightVisitor" {
++ visit(uli: UnitPricedLineItem): double
++ visit(wli: WeightPricedLineItem): double
+}
+VISITOR_WEIGHT <|-- VISITOR_WEIGHT_C
+
+@enduml

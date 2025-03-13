@@ -1,0 +1,128 @@
+@startuml
+
+abstract class POLICY as "PricingPolicy" {
+- category: String
++ {abstract} applyDiscount(price: double): double
+}
+
+note top of POLICY
+R6, R6b:
+Strategy pattern
+for policies.
+Cf Patters slides 20+
+end note
+
+class FV_POLICY as "FreshVeggiesPolicy" {
++ applyDiscount(price: double): double
+}
+POLICY <|-- FV_POLICY
+
+class D_POLICY as "DairyPolicy" {
++ applyDiscount(price: double): double
+}
+POLICY <|-- D_POLICY
+
+
+
+class CUSTOMERDATA as "CustomerData" {
+- id: int
+- firstName: String
+- surname: String
+- plan: CustomerPlan
+- addr: Address
+}
+
+note top of CUSTOMERDATA
+Dependency injection
+for plan and address
+for loose coupling.
+Cf GRASP Slides 24-26
+end note
+
+interface PLAN as "CustomerPlan" {
++ {abstract} applyCartDiscount(total: double): double
++ {abstract} applyDeliveryDiscount(fee: double): double
++ {abstract} getAnnualFee(): double
+}
+CUSTOMERDATA --> "1" PLAN
+
+note left of PLAN
+R5, R5b, R8b:
+- Strategy pattern
+- Information expert
+on final cart discount.
+end note
+
+class PLAN_STANDARD as "StandardPlan" {
++ applyCartDiscount(total: double): double
++ applyDeliveryDiscount(fee: double): double
++ getAnnualFee(): double
+}
+PLAN <|-- PLAN_STANDARD
+
+class PLAN_PRIME as "PrimePlan" {
++ applyCartDiscount(total: double): double
++ applyDeliveryDiscount(fee: double): double
++ getAnnualFee(): double
+}
+PLAN <|-- PLAN_PRIME
+
+class PLAN_PLAT as "PlatinumPlan" {
++ applyCartDiscount(total: double): double
++ applyDeliveryDiscount(fee: double): double
++ getAnnualFee(): double
+}
+PLAN <|-- PLAN_PLAT
+
+class ADDRESS as "Address" {
+- x: double
+- y: double
+}
+CUSTOMERDATA --> "1" ADDRESS
+
+interface DIST as "Distance" {
++ {abstract} distanceBetween(addr1: Address, addr2: Address): double
+}
+DIST --> ADDRESS
+
+class EUCLID as "EuclideanDistance" {
++ distanceBetween(addr1: Address, addr2: Address): double
+}
+DIST <|-- EUCLID
+
+class MANHATTAN as "ManhattanDistance" {
++ distanceBetween(addr1: Address, addr2: Address): double
+}
+DIST <|-- MANHATTAN
+
+
+
+class SUPERMARKET as "SupermarketData" {
+- addr: Address
+- distComputer: Distance
+- plans: List<CustomerPlan>
+- policies: List<PricingPolicy>
+- customers: List<CustomerData>
++ addPolicy(policy: PricingPolicy): void
++ addCustomerData(firstName: String, surname: String, plan: CustomerPlan, addr: Address): void
++ distanceTo(addr: Address): double
++ findPolicy(category: String): PricingPolicy
++ findCustomerData(customerDataId: int): CustomerData
+}
+SUPERMARKET --> "1" ADDRESS
+SUPERMARKET --> "1" DIST
+SUPERMARKET --> "1..*" PLAN
+SUPERMARKET --> "1..*" POLICY
+SUPERMARKET --> "0..*" CUSTOMERDATA
+
+note top of SUPERMARKET
+SupermarketData is a database
+of sorts and aggregates 
+policies and customer data.
+--> Creator pattern: it is
+responsible for creating
+CustomerData instances.
+Cf GRASP Slide 32
+end note
+
+@enduml
