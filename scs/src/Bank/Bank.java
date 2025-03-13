@@ -33,7 +33,7 @@ public class Bank {
         Account account = findAccount(accountId);
 
         if (account == null) {
-            System.out.println("Account with id " + accountId + " not found. End transaction.");
+            System.out.println("[Bank]: Account with id " + accountId + " not found. End transaction.");
             return false;
         }
         else {
@@ -45,7 +45,10 @@ public class Bank {
         Account account = findAccount(accountId);
 
         if (account == null) {
-            System.out.println("Account with id " + accountId + " not found. Can't perform transaction.");
+            System.out.println("[Bank]: Account with id " + accountId + " not found. Can't perform transaction.");
+        }
+        else if (!account.checkTransactionValidity(amount)) {
+            System.out.println("[Bank]: Transaction not valid. Can't perform transaction.");
         }
         else {
             account.takeMoney(amount);

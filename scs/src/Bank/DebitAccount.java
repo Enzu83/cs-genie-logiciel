@@ -6,17 +6,16 @@ public class DebitAccount extends Account {
         super(balance);
     }
 
-    public void takeMoney(double amount) {
-        if (checkTransactionValidity(amount)) {
-            this.balance_ -= amount;
-        }
-        else {
-            System.out.println("Insufficient balance (" + this.balance_ + ") to take " + amount + ".");
-        }
-    }
+    public void takeMoney(double amount) { this.balance_ -= amount; }
 
     public boolean checkTransactionValidity(double amount) {
-        return this.balance_ >= amount;
+        if (this.balance_ >= amount) {
+            return true;
+        }
+        else {
+            System.out.println("[DebitAccount]: Insufficient balance (" + this.balance_ + ") to take " + amount + ".");
+            return false;
+        }
     }
 
     public String toString() {

@@ -13,18 +13,23 @@ public class POS {
         if (this.insertedCard_ == null) {
             if (checkCard(card)) {
                 this.insertedCard_ = card;
-                System.out.println("Card valid. Inserted card: " + this.insertedCard_);
+                System.out.println("[POS]: Card valid. Inserted card: " + this.insertedCard_);
             } else {
-                System.out.println("Card invalid. Can't insert card: " + card);
+                System.out.println("[POS]: Card invalid. Can't insert card: " + card);
             }
         } else {
-            System.out.println("A card is already inserted. Can't insert card.");
+            System.out.println("[POS]: A card is already inserted. Can't insert card.");
         }
     }
 
     public void ejectCard() {
-        System.out.println(this.insertedCard_ + " ejected.");
-        this.insertedCard_ = null;
+        if (this.insertedCard_ == null) {
+            System.out.println("[POS]: Can't eject card. There is none.");
+        }
+        else {
+            System.out.println("[POS]: " + this.insertedCard_ + " ejected.");
+            this.insertedCard_ = null;
+        }
     }
 
     public boolean checkCard(Card card) {
@@ -33,7 +38,7 @@ public class POS {
 
     public boolean checkPIN(int pin) {
         if (insertedCard_ == null) {
-            System.out.println("No card inserted. Can't check PIN.");
+            System.out.println("[POS]: No card inserted. Can't check PIN.");
             return false;
         } else {
             return pin == insertedCard_.getPin();
@@ -41,20 +46,27 @@ public class POS {
     }
 
     public boolean askAuthorization() {
-        return this.tas_.openSecureConnection();
+        if (this.tas_.openSecureConnection()) {
+            System.out.println("[POS]: Authorization successful. Starting transaction.");
+            return true;
+        }
+        else {
+            System.out.println("[POS]: Couldn't open secure connection with the TAS. End of transaction.");
+            return false;
+        }
     }
 
     public boolean startTransaction(double amount) {
         if (this.insertedCard_ == null) {
-            System.out.println("No card inserted. Can't start transaction.");
+            System.out.println("[POS]: No card inserted. Can't start transaction.");
             return false;
         } 
         else if (this.tas_.startTransaction(this.insertedCard_.getAccountId(), amount)) {
-            System.out.println("Transaction accepted.");
-            this.ejectCard();
+            System.out.println("[POS]: Payment successful. Transaction completed.");
             return true;
         }
         else {
+            System.out.println("[POS]: Payment failed. Transaction aborted.");
             return false;
         }
     }

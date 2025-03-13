@@ -45,9 +45,59 @@ public class SCSController {
         this.bank_.addDebitAccount(balance);
     }
 
+    public void addCustomerData(String firstName, String surname, CustomerPlan plan, Address addr) {
+        this.supermarketData_.addCustomerData(firstName, surname, plan, addr);
+    }
+
     public void addCustomer(Card card, int customerDataId) {
         this.customers_.add(new Customer(card, customerDataId));
     }
+
+    public void addUnitPricedItem(String label, String category, double pricePerUnit, double kgPerUnit) {
+        this.items_.add(new UnitPricedItem(label, category, pricePerUnit, kgPerUnit));
+    }
+
+    public void addWeightPricedItem(String label, String category, double pricePerKg) {
+        this.items_.add(new WeightPricedItem(label, category, pricePerKg));
+    }
+
+    public Item findItem(int itemId) {
+        for (Item item : this.items_) {
+            if (item.getId() == itemId) {
+                return item;
+            }
+        }
+
+        return null;
+    }
+
+    public void addUnitPricedLineItemToCart(List<LineItem> cart, int itemId, int quantity) {
+        Item item = findItem(itemId);
+
+        // Check if the corresponding item is a unit priced item
+        if (item instanceof UnitPricedItem) {
+            cart.add(new UnitPricedLineItem((UnitPricedItem) item, quantity));
+        }
+        // If it's not, don't add it
+        else {
+            System.out.println("Can't add item to cart. Expected a UnitPricedItem. Got: " + item + ".");
+        }
+    }
+
+    public void addWeightPricedLineItemToCart(List<LineItem> cart, int itemId, double kgWeight) {
+        Item item = findItem(itemId);
+
+        // Check if the corresponding item is a weight priced item
+        if (item instanceof WeightPricedItem) {
+            cart.add(new WeightPricedLineItem((WeightPricedItem) item, kgWeight));
+        }
+        // If it's not, don't add it
+        else {
+            System.out.println("Can't add item to cart. Expected a WeightPricedItem. Got: " + item + ".");
+        }
+    }
+
+    public CashRegister getCashRegister() { return this.cashRegister_; }
 
     public Customer getCustomer(int index) {
         return this.customers_.get(index);
@@ -57,7 +107,9 @@ public class SCSController {
         return this.customerPlans_.get(index);
     }
 
-    public Account getAccount(int index) {
-        return this.bank_.getAccount(index);
-    }
+    public Account getAccount(int index) { return this.bank_.getAccount(index); }
+
+    public Item getItem(int index) { return this.items_.get(index); }
+
+    public POS getPOS() { return this.pos_; }
 }

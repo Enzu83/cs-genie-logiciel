@@ -48,6 +48,8 @@ public class SupermarketData {
 		return null;
 	}
 
+	public CustomerData getCustomerData(int index) { return this.customers_.get(index); }
+
 	public void setDistComputer(Distance distComputer) {
 		this.distComputer_ = distComputer;
 	}

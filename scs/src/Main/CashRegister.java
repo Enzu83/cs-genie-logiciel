@@ -26,7 +26,7 @@ public class CashRegister {
 			lineItemPrice = itemPolicy.applyDiscount(lineItemPrice);
 		}
 		
-		System.out.printf("Scanned %s (%f euros)\n", lineItem.getItemLabel(), lineItemPrice);
+		System.out.printf("[CashRegister]: Scanned %s (%f euros)\n", lineItem.getItemLabel(), lineItemPrice);
 		return lineItemPrice;
 	}
 	

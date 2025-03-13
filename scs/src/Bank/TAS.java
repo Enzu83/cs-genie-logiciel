@@ -8,22 +8,22 @@ public class TAS {
     }
 
     public boolean openSecureConnection() {
-        System.out.println("Secure connection opened.");
+        System.out.println("[TAS]: Secure connection opened.");
         return true;
     }
 
     public void closeSecureConnection() {
-        System.out.println("Secure connection closed.");
+        System.out.println("[TAS]: Secure connection closed.");
     }
 
     public boolean startTransaction(int accountId, double amount) {
         if (!bank_.checkTransactionValidity(accountId, amount)) {
-            System.out.println("Transaction not valid.");
+            System.out.println("[TAS]: Transaction not valid.");
             return false;
         }
         else {
             bank_.performTransaction(accountId, amount);
-            System.out.println("Transaction done.");
+            System.out.println("[TAS]: Transaction done.");
             return true;
         }
     }

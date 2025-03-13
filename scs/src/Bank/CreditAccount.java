@@ -10,17 +10,16 @@ public class CreditAccount extends Account {
         this.maxDebt_ = maxDebt;
     }
 
-    public void takeMoney(double amount) {
-        if (checkTransactionValidity(amount)) {
-            this.currentDebt_ += amount;
-        }
-        else {
-            System.out.println("Insufficient debt left (" + (this.maxDebt_ - this.currentDebt_) + ") to add " + amount + ".");
-        }
-    }
+    public void takeMoney(double amount) { this.currentDebt_ += amount; }
 
     public boolean checkTransactionValidity(double amount) {
-        return this.currentDebt_ + amount <= this.maxDebt_;
+        if (this.currentDebt_ + amount <= this.maxDebt_) {
+            return true;
+        }
+        else {
+            System.out.println("[CreditAccount]: Insufficient debt left (" + (this.maxDebt_ - this.currentDebt_) + ") to add " + amount + ".");
+            return false;
+        }
     }
 
     public void setMaxDebt(double maxDebt) {

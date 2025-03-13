@@ -27,9 +27,6 @@ class CreditAccountTest {
 
     @Test
     void takeMoney() {
-        this.creditAccount_.takeMoney(150.0); // Too much money to be taken. Debt not updated
-        assertEquals(0.0, this.creditAccount_.getCurrentDebt());
-
         this.creditAccount_.takeMoney(40.0); // Add 40.0 to the debt
         assertEquals(40.0, this.creditAccount_.getCurrentDebt());
     }
