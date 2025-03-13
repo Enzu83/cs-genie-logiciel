@@ -4,7 +4,7 @@ import java.util.Random;
 
 public abstract class Account {
     private static int counter_ = 0;
-    private static Random random_ = new Random();
+    private static final Random random_ = new Random();
 
     protected final int id_;
     protected double balance_;

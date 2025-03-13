@@ -45,7 +45,7 @@ class SupermarketDataTest {
         assertEquals(freshVeggiesPolicy, this.supermarketData_.findPolicy("Vegetables"));
 
         // Search a non-existent policy
-        assertNull(this.supermarketData_.findPolicy("Fruit"));
+        assertNull(this.supermarketData_.findPolicy("Fruits"));
     }
 
     @Test
