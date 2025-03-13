@@ -13,9 +13,9 @@ public class POS {
         if (this.insertedCard_ == null) {
             if (checkCard(card)) {
                 this.insertedCard_ = card;
-                System.out.println("Bank.Card valid. Inserted card: " + card);
+                System.out.println("Card valid. Inserted card: " + this.insertedCard_);
             } else {
-                System.out.println("Bank.Card invalid. Can't insert card.");
+                System.out.println("Card invalid. Can't insert card: " + card);
             }
         } else {
             System.out.println("A card is already inserted. Can't insert card.");
@@ -23,7 +23,7 @@ public class POS {
     }
 
     public void ejectCard() {
-        System.out.println("Bank.Card " + this.insertedCard_ + " ejected.");
+        System.out.println(this.insertedCard_ + " ejected.");
         this.insertedCard_ = null;
     }
 
@@ -44,13 +44,18 @@ public class POS {
         return this.tas_.openSecureConnection();
     }
 
-    public void startTransaction(double amount) {
+    public boolean startTransaction(double amount) {
         if (this.insertedCard_ == null) {
             System.out.println("No card inserted. Can't start transaction.");
+            return false;
         } 
         else if (this.tas_.startTransaction(this.insertedCard_.getAccountId(), amount)) {
             System.out.println("Transaction accepted.");
             this.ejectCard();
+            return true;
+        }
+        else {
+            return false;
         }
     }
 

@@ -15,7 +15,7 @@ public class CreditAccount extends Account {
             this.currentDebt_ += amount;
         }
         else {
-            System.out.println("Insufficient debt left (" + this.currentDebt_ + ") to add " + amount + ".");
+            System.out.println("Insufficient debt left (" + (this.maxDebt_ - this.currentDebt_) + ") to add " + amount + ".");
         }
     }
 
@@ -23,15 +23,15 @@ public class CreditAccount extends Account {
         return this.currentDebt_ + amount <= this.maxDebt_;
     }
 
-    private void setMaxDebt(double maxDebt) {
+    public void setMaxDebt(double maxDebt) {
         this.maxDebt_ = maxDebt;
     }
 
-    private double getMaxDebt() {
+    public double getMaxDebt() {
         return this.maxDebt_;
     }
 
-    private double getCurrentDebt() {
+    public double getCurrentDebt() {
         return this.currentDebt_;
     }
 

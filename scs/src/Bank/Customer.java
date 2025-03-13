@@ -13,8 +13,8 @@ public class Customer {
         pos.insertCard(this.card_);
     }
 
-    public void typePIN(POS pos, int pin) {
-        pos.checkPIN(pin);
+    public boolean typePIN(POS pos, int pin) {
+        return pos.checkPIN(pin);
     }
 
     public void setCard(Card card) {
