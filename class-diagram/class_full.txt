@@ -187,7 +187,6 @@ DIST <|-- MANHATTAN
 class SUPERMARKET as "SupermarketData" {
 - addr: Address
 - distComputer: Distance
-- plans: List<CustomerPlan>
 - policies: List<PricingPolicy>
 - customers: List<CustomerData>
 + addPolicy(policy: PricingPolicy): void
@@ -198,7 +197,6 @@ class SUPERMARKET as "SupermarketData" {
 }
 SUPERMARKET --> "1" ADDRESS
 SUPERMARKET --> "1" DIST
-SUPERMARKET --> "1..*" PLAN
 SUPERMARKET --> "1..*" POLICY
 SUPERMARKET --> "0..*" CUSTOMERDATA
 
