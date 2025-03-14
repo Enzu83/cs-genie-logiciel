@@ -97,6 +97,15 @@ public class SCSController {
         }
     }
 
+    public void payAnnualFee(Customer customer) {
+        // Get the customer data to find their plan
+        CustomerData customerData = this.supermarketData_.findCustomerData(customer.getCustomerDataId());
+
+        this.tas_.startTransaction(customer.getCard().getAccountId(), customerData.getPlan().getAnnualFee());
+
+        System.out.println("[TAS]: Annual fee paid for " + customerData.getPlan() + " by " + customer + ".");
+    }
+
     public CashRegister getCashRegister() { return this.cashRegister_; }
 
     public Customer getCustomer(int index) {
