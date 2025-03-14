@@ -28,10 +28,11 @@ public class UseCase2 {
 		// Add a customer
 		scsController.addDebitAccount(800.0); // Create their account
 		Account account = scsController.getAccount(0); // Get their account
-		scsController.addCustomerData("Theo", "Raine", scsController.getCustomerPlan(1), new Address(7.0, 10.0)); // Create a customer data that uses the Prime Plan
+		scsController.addCustomerData("Theo", "Raine", scsController.getCustomerPlan(2), new Address(7.0, 10.0)); // Create a customer data that uses the Prime Plan
 		scsController.addCustomer(account.createCard(), 0); // Add them to the list
 
 		Customer customer = scsController.getCustomer(0); // Get the customer
+		scsController.payAnnualFee(customer); // Pay the fee of the plan
 
 		// Create a cart
 		List<LineItem> cart = new ArrayList<>();

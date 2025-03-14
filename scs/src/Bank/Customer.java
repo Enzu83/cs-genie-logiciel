@@ -30,6 +30,6 @@ public class Customer {
     }
 
     public String toString() {
-        return "Customer[card_=" + card_ + ", customerDataId=" + customerDataId + "]";
+        return "Customer[card=" + card_ + ", customerDataId=" + customerDataId + "]";
     }
 }

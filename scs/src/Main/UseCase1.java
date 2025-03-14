@@ -21,12 +21,13 @@ public class UseCase1 {
 		scsController.addWeightPricedItem("Potato", "Vegetables", 0.7);
 
 		// Add a customer
-		scsController.addCreditAccount(1000.0, 600.0); // Create their account
+		scsController.addCreditAccount(1000.0, 700.0); // Create their account
 		Account account = scsController.getAccount(0); // Get their account
 		scsController.addCustomerData("Madeline", "Raine", scsController.getCustomerPlan(1), new Address(3.0, 14.0)); // Create a customer data that uses the Prime Plan
 		scsController.addCustomer(account.createCard(), 0); // Add them to the list
 
 		Customer customer = scsController.getCustomer(0); // Get the customer
+		scsController.payAnnualFee(customer); // Pay the fee of the plan
 
 		// Create a cart
 		List<LineItem> cart = new ArrayList<>();
