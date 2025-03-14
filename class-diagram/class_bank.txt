@@ -66,6 +66,7 @@ abstract class ACCOUNT as "Account" {
 + {abstract} takeMoney(amount: double): void
 }
 BANK --> "1..*" ACCOUNT
+ACCOUNT --> CARD
 
 class ACCOUNT_C as "CreditAccount" {
 - maxDebt: double
