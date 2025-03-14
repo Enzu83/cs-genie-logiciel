@@ -63,10 +63,12 @@ public class POS {
         } 
         else if (this.tas_.startTransaction(this.insertedCard_.getAccountId(), amount)) {
             System.out.println("[POS]: Payment successful. Transaction completed.");
+            this.tas_.closeSecureConnection();
             return true;
         }
         else {
             System.out.println("[POS]: Payment failed. Transaction aborted.");
+            this.tas_.closeSecureConnection();
             return false;
         }
     }
